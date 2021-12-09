@@ -5,7 +5,7 @@
  */
 import { FontAwesome } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme, DarkTheme, getFocusedRouteNameFromRoute, RouteProp } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { ColorSchemeName, Pressable } from 'react-native';
@@ -89,15 +89,21 @@ const TabOneStack = createNativeStackNavigator<TabOneStackParamList>()
 const TabTwoStack = createNativeStackNavigator<TabTwoStackParamList>();
 function TabOneStackScreen() {
   return (
-    <TabOneStack.Navigator>
+    <TabOneStack.Navigator
+      screenOptions={{ headerShown: false }}
+    >
       <TabOneStack.Screen 
         name="TabOne" 
         component={TabOneScreen}  
-        options={{
-          headerShown: false
-        }}
       />
-      <TabOneStack.Screen name="CoinDetail" component={CoinDetailScreen} />
+      <TabOneStack.Screen 
+        name="CoinDetail" 
+        component={CoinDetailScreen}  
+        options={({ route }) => ({
+          headerShown: true,
+          headerTitle: 'Coin Name here'
+        })}
+      />
     </TabOneStack.Navigator>
   )
 }
@@ -120,3 +126,12 @@ function TabBarIcon(props: {
 }) {
   return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
 }
+
+const getHeaderTitle = (route: RouteProp<TabOneStackParamList>) => {
+  const currentRouteName = getFocusedRouteNameFromRoute(route);
+
+  switch(currentRouteName){
+    case 'CoinDetail': 
+      return 
+  }
+};
