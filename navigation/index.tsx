@@ -12,17 +12,18 @@ import { ColorSchemeName, Pressable } from 'react-native';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
+import CoinDetailScreen from '../screens/CoinDetailScreen';
 import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
-import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
+import { RootStackParamList, RootTabParamList, RootTabScreenProps, TabOneStackParamList, TabTwoStackParamList } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
     <NavigationContainer
-      linking={LinkingConfiguration}
+      // linking={LinkingConfiguration}
       theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <RootNavigator />
     </NavigationContainer>
@@ -58,43 +59,57 @@ function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
+      initialRouteName="BottomTabOne"
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
       }}>
       <BottomTab.Screen
-        name="TabOne"
-        component={TabOneScreen}
-        options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
-          title: 'Tab One',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          headerRight: () => (
-            <Pressable
-              onPress={() => navigation.navigate('Modal')}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-              })}>
-              <FontAwesome
-                name="info-circle"
-                size={25}
-                color={Colors[colorScheme].text}
-                style={{ marginRight: 15 }}
-              />
-            </Pressable>
-          ),
-        })}
+        name="BottomTabOne"
+        component={TabOneStackScreen}
+        options={{ 
+          headerShown: false,
+          tabBarShowLabel: false,
+          tabBarIcon: ({ color }) => <TabBarIcon name="bitcoin" color={color} />,
+        }}
       />
       <BottomTab.Screen
-        name="TabTwo"
-        component={TabTwoScreen}
+        name="BottomTabTwo"
+        component={TabTwoStackScreen}
         options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          headerShown: false,
+          tabBarShowLabel: false,
+          tabBarIcon: ({ color }) => <TabBarIcon name="cc-mastercard" color={color} />,
         }}
       />
     </BottomTab.Navigator>
   );
 }
+
+const TabOneStack = createNativeStackNavigator<TabOneStackParamList>()
+const TabTwoStack = createNativeStackNavigator<TabTwoStackParamList>();
+function TabOneStackScreen() {
+  return (
+    <TabOneStack.Navigator>
+      <TabOneStack.Screen 
+        name="TabOne" 
+        component={TabOneScreen}  
+        options={{
+          headerShown: false
+        }}
+      />
+      <TabOneStack.Screen name="CoinDetail" component={CoinDetailScreen} />
+    </TabOneStack.Navigator>
+  )
+}
+
+function TabTwoStackScreen() {
+  return (
+    <TabTwoStack.Navigator>
+      <TabTwoStack.Screen name="TabTwo" component={TabTwoScreen} />
+      <TabOneStack.Screen name="CoinDetail" component={CoinDetailScreen} />
+    </TabTwoStack.Navigator>
+  )
+};
 
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/

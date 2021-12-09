@@ -48,7 +48,7 @@ const cyptoData: CryptoType[] = [
         holdingAmount: 2361,
     },
 ];
-export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
+export default function TabOneScreen({ navigation }: RootTabScreenProps<'BottomTabOne'>) {
     const [balance, setBalance] = React.useState<number>(10284.94);
 
 
@@ -58,7 +58,7 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
         const isUp = differences > 0
 
         return (
-            <TouchableOpacity style={styles.lstItemContainer}>
+            <TouchableOpacity style={styles.lstItemContainer} onPress={() => navigation.navigate('CoinDetail')} >
                 <View style={styles.listItemIconContainer}>
                     <FontAwesome5 name={iconName} color={'#3e78ff'} size={32} />
                 </View>
@@ -80,7 +80,7 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
 
     return (
         <View style={styles.container}>
-            <Image source={require('../assets/images/logo.png')} style={{ width: 75, height: 75 }} />
+            <Image source={require('../assets/images/logo.png')} style={{ width: 75, height: 75, marginTop: 80 }} />
             <Text style={styles.title}>{moneyFormatter(balance)}</Text>
             <View style={styles.btnGrp}>
                 <TouchableOpacity style={styles.btnXl}>
